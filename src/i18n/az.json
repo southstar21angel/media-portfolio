@@ -1,4 +1,9 @@
 {
+  "seo": {
+    "title": "Mirkazim Media | Peşəkar Videoqrafiya və Video İstehsalı Azərbaycan",
+    "description": "Mirkazim Media - Azərbaycanda və Bakıda yerləşən peşəkar videoqraf və məzmun yaradıcısı. Premium video çəkilişi, reklam çarxları, reels və vizual hekayələr.",
+    "keywords": "Mirkazim, Mirkazim Media, videoqraf, videoqrafiya, Bakı videoqrafı, video çəkilişi, video istehsalı Bakı, content maker Azərbaycan, Bakı, Azərbaycan, videoqrafiya Azərbaycan, klip çəkilişi"
+  },
   "nav": {
     "works": "İşlər",
     "contact": "Əlaqə"
@@ -23,7 +28,9 @@
     "subtitle": "Bütün İşlərimiz",
     "viewDetails": "ətraflı bax",
     "loading": "İşlər yüklənir...",
-    "error": "İşlərin yüklənməsində xəta baş verdi."
+    "error": "İşlərin yüklənməsində xəta baş verdi.",
+    "seoTitle": "Portfoliomuz və Videoqrafiya İşlərimiz | Mirkazim Media",
+    "seoDescription": "Mirkazim Media-nın yaradıcı portfoliounu araşdırın. Bakı, Azərbaycanda premium video istehsalı, reels, reklam işləri və vizual hekayələr."
   },
   "contact": {
     "title": "Əlaqə",

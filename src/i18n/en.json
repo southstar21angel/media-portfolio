@@ -1,4 +1,9 @@
 {
+  "seo": {
+    "title": "Mirkazim Media | Professional Videography & Video Production Azerbaijan",
+    "description": "Mirkazim Media - Professional videographer and content creator based in Baku, Azerbaijan. High-end video production, commercials, reels, and visual storytelling.",
+    "keywords": "Mirkazim, Mirkazim Media, videoqraf, videoqrafiya, videographer Baku, video production Baku, film maker Azerbaijan, content creator Baku, Azerbaijan, Baku, Bakı, Azərbaycan"
+  },
   "nav": {
     "works": "Works",
     "contact": "Contact"
@@ -23,7 +28,9 @@
     "subtitle": "All Projects",
     "viewDetails": "view details",
     "loading": "Loading projects...",
-    "error": "An error occurred while loading projects."
+    "error": "An error occurred while loading projects.",
+    "seoTitle": "Portfolio & Videography Works | Mirkazim Media",
+    "seoDescription": "Explore the creative portfolio of Mirkazim Media. A showcase of premium video production, reels, commercial work, and visual storytelling in Baku, Azerbaijan."
   },
   "contact": {
     "title": "Contact",

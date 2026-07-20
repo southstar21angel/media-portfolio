@@ -1,6 +1,7 @@
 import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
+import { useSEO } from '@/hooks/useSEO'
 import { useProjects } from '@/hooks/useProjects'
 import { ProjectGrid } from '@/components/works/ProjectGrid'
 import { SectionHeading } from '@/components/SectionHeading'
@@ -13,6 +14,12 @@ export const Route = createFileRoute('/works/')({
 function WorksPage() {
   const { t } = useTranslation()
   const { projects, loading, error } = useProjects()
+
+  useSEO({
+    title: t('works.seoTitle'),
+    description: t('works.seoDescription'),
+    keywords: t('seo.keywords'),
+  })
 
   return (
     <div className="bg-black min-h-screen pt-24 pb-16 w-full">

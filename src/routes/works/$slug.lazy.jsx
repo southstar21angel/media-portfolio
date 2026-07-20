@@ -1,6 +1,7 @@
 import React from 'react'
 import { createLazyFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
+import { useSEO } from '@/hooks/useSEO'
 import { ChevronLeft, Expand } from 'lucide-react'
 import { useProject } from '@/hooks/useProject'
 import { localize } from '@/lib/localize'
@@ -26,6 +27,27 @@ function ProjectDetailPage() {
   const { project, loading, error } = useProject(slug)
   const { t } = useTranslation()
   const router = useRouter()
+
+  const seoTitle = project 
+    ? `${localize(project, 'title')} | Mirkazim Media` 
+    : loading 
+      ? `${t('project.loading', 'Loading project...')} | Mirkazim Media`
+      : `Project Not Found | Mirkazim Media`
+
+  const seoDesc = project 
+    ? localize(project, 'description') 
+    : ''
+
+  const seoImage = project?.thumbnail || ''
+
+  useSEO({
+    title: seoTitle,
+    description: seoDesc,
+    keywords: project 
+      ? `${localize(project, 'title')}, ${localize(project, 'category')}, Mirkazim Media, videoqraf, Baku` 
+      : '',
+    image: seoImage,
+  })
 
   if (loading) {
     return (

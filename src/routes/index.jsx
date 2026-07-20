@@ -1,6 +1,7 @@
 import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
+import { useSEO } from '@/hooks/useSEO'
 import { Mail, MapPin } from 'lucide-react'
 import { HeroSection } from '@/components/HeroSection'
 import { AboutSection } from '@/components/AboutSection'
@@ -15,6 +16,12 @@ export const Route = createFileRoute('/')({
 
 function HomePage() {
   const { t } = useTranslation()
+  
+  useSEO({
+    title: t('seo.title'),
+    description: t('seo.description'),
+    keywords: t('seo.keywords'),
+  })
   const [showSplash, setShowSplash] = React.useState(() => {
     return !sessionStorage.getItem('mirkazim_logo_intro')
   })
