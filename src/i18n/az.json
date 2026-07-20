@@ -74,7 +74,10 @@
       "loadingDashboard": "Konsol yüklənir...",
       "empty": "Məlumat bazasında layihə tapılmadı. Yaratmaq üçün 'Layihə Əlavə Et' düyməsinə klikləyin.",
       "retry": "Yenidən yoxla",
-      "deleteConfirm": "\"{{slug}}\" layihəsini silmək istədiyinizdən əminsiniz?"
+      "deleteConfirm": "\"{{slug}}\" layihəsini silmək istədiyinizdən əminsiniz?",
+      "deleteConfirmTitle": "Silinməni Təsdiqlə",
+      "deleteConfirmWarning": "Bu əməliyyat daimidir. Bu layihə ilə bağlı bütün yüklənmiş media faylları (video və önşəkil) yaddaşdan silinəcək.",
+      "deleteButton": "Sil"
     },
     "form": {
       "titleAz": "Başlıq (AZ)",
@@ -101,8 +104,11 @@
       "slugRequired": "Slug tələb olunur!",
       "titleRequired": "Başlıq (AZ və RU) tələb olunur!",
       "videoTitle": "Video Mənbəyi",
-      "videoPlaceholder": "Video Linki (YouTube və ya Instagram URL-i)",
-      "videoHint": "Tam linki yapışdırın (məs. https://www.youtube.com/watch?v=... və ya https://www.instagram.com/reel/...). Qalereya pleyeri onu avtomatik oxudacaq."
+      "videoPlaceholder": "Video Linki (YouTube/Instagram URL-i və ya yüklənmiş fayl URL-i)",
+      "videoHint": "Tam linki yapışdırın (məs. YouTube və ya Instagram) VƏ YA yerli video faylı yükləyin (maks. 100MB).",
+      "videoUpload": "Videonu Yüklə",
+      "videoUploading": "Video yüklənir...",
+      "videoSizeError": "Video faylının ölçüsü 100MB limitini aşır!"
     },
     "table": {
       "preview": "Önbaxış",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabase'
@@ -39,6 +39,7 @@ function AdminPage() {
   // Editor Modal / Form State
   const [editingProject, setEditingProject] = useState(null)
   const [showForm, setShowForm] = useState(false)
+  const [projectToDelete, setProjectToDelete] = useState(null)
 
   // Form Fields
   const [slug, setSlug] = useState('')
@@ -54,6 +55,11 @@ function AdminPage() {
   // Upload States
   const [uploadingThumb, setUploadingThumb] = useState(false)
   const [thumbProgress, setThumbProgress] = useState(0)
+  const [uploadingVideo, setUploadingVideo] = useState(false)
+  const [videoProgress, setVideoProgress] = useState(0)
+  const [uploadedFilesSession, setUploadedFilesSession] = useState([])
+
+  const activeUploads = useRef({ thumb: null, video: null })
 
   // Handle Login using Supabase Auth
   const handleLogin = async (e) => {
@@ -131,6 +137,7 @@ function AdminPage() {
     setSortOrder(projects.length + 1)
     setThumbnailUrl('')
     setVideoUrl('')
+    setUploadedFilesSession([])
     setShowForm(true)
   }
 
@@ -146,6 +153,7 @@ function AdminPage() {
     setSortOrder(proj.sort_order || 0)
     setThumbnailUrl(proj.thumbnail || '')
     setVideoUrl(proj.video_url || '')
+    setUploadedFilesSession([])
     setShowForm(true)
   }
 
@@ -160,6 +168,67 @@ function AdminPage() {
     }
   }
 
+  // File Upload Helper via XMLHttpRequest to track progress
+  const uploadFileWithProgress = (filePath, file, type, onProgress) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        const token = session?.access_token || import.meta.env.VITE_SUPABASE_ANON_KEY || ''
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
+
+        const url = `${supabaseUrl}/storage/v1/object/portfolio-media/${filePath}`
+
+        const xhr = new XMLHttpRequest()
+        if (type) {
+          activeUploads.current[type] = xhr
+        }
+
+        xhr.open('POST', url, true)
+
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+        xhr.setRequestHeader('apikey', import.meta.env.VITE_SUPABASE_ANON_KEY || '')
+        xhr.setRequestHeader('x-upsert', 'true')
+        xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream')
+
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percent = (event.loaded / event.total) * 100
+            onProgress(Math.round(percent))
+          }
+        }
+
+        xhr.onload = () => {
+          if (type) activeUploads.current[type] = null
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              const response = JSON.parse(xhr.responseText)
+              resolve(response)
+            } catch (e) {
+              resolve({ path: filePath })
+            }
+          } else {
+            reject(new Error(`Upload failed with status ${xhr.status}: ${xhr.statusText}`))
+          }
+        }
+
+        xhr.onerror = () => {
+          if (type) activeUploads.current[type] = null
+          reject(new Error('Network error during upload.'))
+        }
+
+        xhr.onabort = () => {
+          if (type) activeUploads.current[type] = null
+          reject(new Error('Upload aborted by user.'))
+        }
+
+        xhr.send(file)
+      } catch (err) {
+        if (type) activeUploads.current[type] = null
+        reject(err)
+      }
+    })
+  }
+
   // File Upload Helper to Supabase Storage (Thumbnails only)
   const handleThumbnailUpload = async (file) => {
     if (!file) return
@@ -172,18 +241,11 @@ function AdminPage() {
       const fileName = `thumbnail-${Math.random().toString(36).substring(2, 10)}-${Date.now()}.${fileExt}`
       const filePath = `thumbnails/${fileName}` // e.g. thumbnails/thumbnail-xyz.png
 
-      const { data, error: uploadError } = await supabase.storage
-        .from('portfolio-media')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: true,
-          onUploadProgress: (progress) => {
-            const percent = (progress.loaded / progress.total) * 100
-            setThumbProgress(Math.round(percent))
-          }
-        })
+      await uploadFileWithProgress(filePath, file, 'thumb', (progress) => {
+        setThumbProgress(progress)
+      })
 
-      if (uploadError) throw uploadError
+      setUploadedFilesSession(prev => [...prev, filePath])
 
       const { data: publicUrlData } = supabase.storage
         .from('portfolio-media')
@@ -191,11 +253,83 @@ function AdminPage() {
 
       setThumbnailUrl(publicUrlData.publicUrl)
     } catch (err) {
-      console.error('Thumbnail upload failed:', err)
-      alert(`Upload failed: ${err.message || 'Unknown error'}`)
+      if (err.message !== 'Upload aborted by user.') {
+        console.error('Thumbnail upload failed:', err)
+        alert(`Upload failed: ${err.message || 'Unknown error'}`)
+      }
     } finally {
       setUploadingThumb(false)
     }
+  }
+
+  // File Upload Helper to Supabase Storage (Videos)
+  const handleVideoUpload = async (file) => {
+    if (!file) return
+
+    // 100MB limit = 100 * 1024 * 1024 bytes
+    const MAX_SIZE = 100 * 1024 * 1024
+    if (file.size > MAX_SIZE) {
+      alert(t('admin.form.videoSizeError') || 'Video size exceeds 100MB limit!')
+      return
+    }
+
+    try {
+      setUploadingVideo(true)
+      setVideoProgress(0)
+
+      const fileExt = file.name.split('.').pop()
+      const fileName = `video-${Math.random().toString(36).substring(2, 10)}-${Date.now()}.${fileExt}`
+      const filePath = `videos/${fileName}`
+
+      await uploadFileWithProgress(filePath, file, 'video', (progress) => {
+        setVideoProgress(progress)
+      })
+
+      setUploadedFilesSession(prev => [...prev, filePath])
+
+      const { data: publicUrlData } = supabase.storage
+        .from('portfolio-media')
+        .getPublicUrl(filePath)
+
+      setVideoUrl(publicUrlData.publicUrl)
+    } catch (err) {
+      if (err.message !== 'Upload aborted by user.') {
+        console.error('Video upload failed:', err)
+        alert(`Upload failed: ${err.message || 'Unknown error'}`)
+      }
+    } finally {
+      setUploadingVideo(false)
+    }
+  }
+
+  // Handle Cancel Form (removes any temporary uploaded files in the current editing session)
+  const handleCancelForm = async () => {
+    // 1. Abort any ongoing uploads immediately
+    if (activeUploads.current.thumb) {
+      activeUploads.current.thumb.abort()
+      activeUploads.current.thumb = null
+    }
+    if (activeUploads.current.video) {
+      activeUploads.current.video.abort()
+      activeUploads.current.video = null
+    }
+
+    // 2. Clean up files that were already fully uploaded in this session
+    if (uploadedFilesSession.length > 0) {
+      try {
+        const { error: storageErr } = await supabase.storage
+          .from('portfolio-media')
+          .remove(uploadedFilesSession)
+
+        if (storageErr) {
+          console.error('Error cleaning up session uploads:', storageErr)
+        }
+      } catch (err) {
+        console.error('Error during cleanup:', err)
+      }
+    }
+    setUploadedFilesSession([])
+    setShowForm(false)
   }
 
   // Save Project
@@ -238,6 +372,23 @@ function AdminPage() {
 
       if (resError) throw resError
 
+      // Clean up old replaced files from storage if editing
+      if (editingProject) {
+        const oldFilesToDelete = []
+        if (editingProject.thumbnail && editingProject.thumbnail !== thumbnailUrl) {
+          const oldThumbPath = getStoragePathFromUrl(editingProject.thumbnail)
+          if (oldThumbPath) oldFilesToDelete.push(oldThumbPath)
+        }
+        if (editingProject.video_url && editingProject.video_url !== videoUrl) {
+          const oldVideoPath = getStoragePathFromUrl(editingProject.video_url)
+          if (oldVideoPath) oldFilesToDelete.push(oldVideoPath)
+        }
+        if (oldFilesToDelete.length > 0) {
+          await supabase.storage.from('portfolio-media').remove(oldFilesToDelete)
+        }
+      }
+
+      setUploadedFilesSession([])
       setShowForm(false)
       fetchAdminProjects()
     } catch (err) {
@@ -248,18 +399,57 @@ function AdminPage() {
     }
   }
 
+  // Extract storage file path from Supabase public URL
+  const getStoragePathFromUrl = (url) => {
+    if (!url) return null
+    const marker = '/storage/v1/object/public/portfolio-media/'
+    const index = url.indexOf(marker)
+    if (index !== -1) {
+      return url.substring(index + marker.length)
+    }
+    return null
+  }
+
   // Delete Project
-  const handleDeleteProject = async (id, slugName) => {
-    if (!confirm(t('admin.dashboard.deleteConfirm', { slug: slugName }))) return
+  const handleDeleteProject = async (proj) => {
+    if (!proj) return
 
     try {
       setLoading(true)
+
+      const pathsToDelete = []
+
+      const thumbPath = getStoragePathFromUrl(proj.thumbnail)
+      if (thumbPath) pathsToDelete.push(thumbPath)
+
+      const videoPath = getStoragePathFromUrl(proj.video_url)
+      if (videoPath) pathsToDelete.push(videoPath)
+
+      if (proj.images && Array.isArray(proj.images)) {
+        proj.images.forEach(imgUrl => {
+          const imgPath = getStoragePathFromUrl(imgUrl)
+          if (imgPath) pathsToDelete.push(imgPath)
+        })
+      }
+
+      if (pathsToDelete.length > 0) {
+        const { error: storageErr } = await supabase.storage
+          .from('portfolio-media')
+          .remove(pathsToDelete)
+
+        if (storageErr) {
+          console.error('Error deleting files from storage:', storageErr)
+        }
+      }
+
       const { error: deleteErr } = await supabase
         .from('projects')
         .delete()
-        .eq('id', id)
+        .eq('id', proj.id)
 
       if (deleteErr) throw deleteErr
+
+      setProjectToDelete(null)
       fetchAdminProjects()
     } catch (err) {
       console.error('Error deleting project:', err)
@@ -376,7 +566,7 @@ function AdminPage() {
               </h2>
               <button
                 type="button"
-                onClick={() => setShowForm(false)}
+                onClick={handleCancelForm}
                 className="text-xs text-muted-foreground hover:text-white uppercase tracking-widest font-heading"
               >
                 {t('admin.dashboard.cancel')}
@@ -548,7 +738,7 @@ function AdminPage() {
                     </div>
                   </div>
 
-                  {/* Video URL Section (YouTube/Instagram only) */}
+                  {/* Video URL Section */}
                   <div className="border border-border/20 p-4 bg-black/40 flex flex-col gap-3">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] text-white tracking-wider font-heading uppercase flex items-center gap-1.5">
@@ -564,9 +754,44 @@ function AdminPage() {
                         placeholder={t('admin.form.videoPlaceholder')}
                         className="bg-black border border-border/40 focus:border-accent outline-none text-white text-xs px-3 py-2.5 rounded-none font-body"
                       />
+
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="file"
+                          accept="video/*"
+                          id="video-upload"
+                          className="hidden"
+                          onChange={(e) => handleVideoUpload(e.target.files[0])}
+                          disabled={uploadingVideo}
+                        />
+                        <label
+                          htmlFor="video-upload"
+                          className="bg-neutral-800 hover:bg-neutral-700 text-white font-heading text-[10px] tracking-widest uppercase py-2 px-3 cursor-pointer select-none transition-colors border border-border/40"
+                        >
+                          {uploadingVideo ? `${t('admin.form.videoUploading')} (${videoProgress}%)` : t('admin.form.videoUpload')}
+                        </label>
+                      </div>
+
+                      {uploadingVideo && (
+                        <div className="w-full bg-neutral-800 h-1.5 mt-1 overflow-hidden">
+                          <div
+                            className="bg-accent h-full transition-all duration-300"
+                            style={{ width: `${videoProgress}%` }}
+                          />
+                        </div>
+                      )}
+
                       <span className="text-[10px] text-muted-foreground font-light leading-relaxed">
                         {t('admin.form.videoHint')}
                       </span>
+
+                      {videoUrl && (
+                        <div className="mt-2 w-32 border border-border/40 overflow-hidden">
+                          <AspectRatio ratio={16/9}>
+                            <video src={videoUrl} className="object-cover w-full h-full" muted playsInline controls={false} />
+                          </AspectRatio>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -577,14 +802,14 @@ function AdminPage() {
                 <Button
                   type="button"
                   variant="ghost"
-                  onClick={() => setShowForm(false)}
+                  onClick={handleCancelForm}
                   className="rounded-none text-muted-foreground hover:text-white uppercase tracking-widest text-xs"
                 >
                   {t('admin.dashboard.cancel')}
                 </Button>
                 <Button
                   type="submit"
-                  disabled={saving || uploadingThumb}
+                  disabled={saving || uploadingThumb || uploadingVideo}
                   className="rounded-none bg-accent hover:bg-accent/80 text-black font-heading font-bold uppercase tracking-widest text-xs px-8 py-5 flex items-center gap-2"
                 >
                   {saving ? (
@@ -678,7 +903,7 @@ function AdminPage() {
                               <Edit className="size-4" />
                             </button>
                             <button
-                              onClick={() => handleDeleteProject(proj.id, proj.slug)}
+                              onClick={() => setProjectToDelete(proj)}
                               className="p-2 hover:bg-red-950/40 text-muted-foreground hover:text-red-400 border border-transparent hover:border-red-900/30 transition-all"
                               title="Delete Project"
                             >
@@ -694,7 +919,54 @@ function AdminPage() {
             )}
           </div>
         )}
-        
+
+        {/* Custom Confirmation Modal for Deletion */}
+        {projectToDelete && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+            <div className="w-full max-w-md bg-neutral-950 border border-red-900/40 p-6 md:p-8 flex flex-col gap-6 rounded-none shadow-2xl">
+              <div className="flex items-center gap-3 border-b border-red-950/40 pb-4">
+                <div className="bg-red-950/40 p-2 border border-red-900/30 text-red-500">
+                  <Trash2 className="size-6" />
+                </div>
+                <div>
+                  <h3 className="font-heading font-black text-lg tracking-wider text-white uppercase leading-none">
+                    {t('admin.dashboard.deleteConfirmTitle')}
+                  </h3>
+                  <p className="text-[9px] text-red-400 font-heading tracking-widest uppercase mt-1">
+                    Warning
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2 text-left">
+                <p className="text-sm font-body text-white font-medium">
+                  {t('admin.dashboard.deleteConfirm', { slug: projectToDelete.slug })}
+                </p>
+                <p className="text-xs font-body text-muted-foreground font-light leading-relaxed normal-case">
+                  {t('admin.dashboard.deleteConfirmWarning')}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 border-t border-border/20 pt-4 mt-2">
+                <button
+                  type="button"
+                  onClick={() => setProjectToDelete(null)}
+                  className="px-4 py-2.5 bg-neutral-900 hover:bg-neutral-800 text-muted-foreground hover:text-white font-heading font-semibold uppercase tracking-wider text-xs border border-border/20 transition-colors cursor-pointer"
+                >
+                  {t('admin.dashboard.cancel')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDeleteProject(projectToDelete)}
+                  className="px-5 py-2.5 bg-red-950/80 hover:bg-red-900 text-white font-heading font-bold uppercase tracking-wider text-xs border border-red-800/40 transition-colors cursor-pointer"
+                >
+                  {t('admin.dashboard.deleteButton')}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   )

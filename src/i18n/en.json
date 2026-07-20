@@ -74,7 +74,10 @@
       "loadingDashboard": "Loading dashboard...",
       "empty": "No projects found in the database. Click 'Add Project' to create one.",
       "retry": "Retry",
-      "deleteConfirm": "Are you sure you want to delete the project \"{{slug}}\"?"
+      "deleteConfirm": "Are you sure you want to delete the project \"{{slug}}\"?",
+      "deleteConfirmTitle": "Confirm Deletion",
+      "deleteConfirmWarning": "This action is permanent. All uploaded media files (video & thumbnail) associated with this project will be deleted from storage.",
+      "deleteButton": "Delete"
     },
     "form": {
       "titleAz": "Title (AZ)",
@@ -101,8 +104,11 @@
       "slugRequired": "Slug is required!",
       "titleRequired": "Title (AZ and RU) is required!",
       "videoTitle": "Video Source",
-      "videoPlaceholder": "Video Link (YouTube or Instagram URL)",
-      "videoHint": "Paste full link (e.g. https://www.youtube.com/watch?v=... or https://www.instagram.com/reel/...). The gallery player will automatically play it."
+      "videoPlaceholder": "Video Link (YouTube/Instagram URL or uploaded file URL)",
+      "videoHint": "Paste full link (YouTube or Instagram) OR upload a custom video file (max 100MB).",
+      "videoUpload": "Upload Video",
+      "videoUploading": "Uploading video...",
+      "videoSizeError": "Video size exceeds the 100MB limit!"
     },
     "table": {
       "preview": "Preview",

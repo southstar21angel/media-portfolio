@@ -35,7 +35,7 @@ export function ProjectCard({ project }) {
         </DialogTrigger>
 
         {/* Video Player Modal */}
-        <DialogContent className="max-w-4xl w-[95vw] bg-black border border-border/40 p-1 flex items-center justify-center rounded-none overflow-hidden">
+        <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] bg-black border border-border/40 p-1 flex items-center justify-center rounded-none overflow-hidden">
           <DialogTitle className="sr-only">{localize(project, 'title')}</DialogTitle>
           <div className="w-full">
             <VideoPlayer videoUrl={project.video_url} poster={project.thumbnail} autoPlay={true} />

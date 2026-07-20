@@ -73,7 +73,10 @@
       "loadingDashboard": "Загрузка панели...",
       "empty": "Проекты в базе данных не найдены. Нажмите 'Добавить проект', чтобы создать новый.",
       "retry": "Повторить",
-      "deleteConfirm": "Вы уверены, что хотите удалить проект \"{{slug}}\"?"
+      "deleteConfirm": "Вы уверены, что хотите удалить проект \"{{slug}}\"?",
+      "deleteConfirmTitle": "Подтверждение удаления",
+      "deleteConfirmWarning": "Это действие необратимо. Все загруженные медиафайлы (видео и миниатюра), связанные с этим проектом, будут удалены из хранилища.",
+      "deleteButton": "Удалить"
     },
     "form": {
       "titleAz": "Название (AZ)",
@@ -100,8 +103,11 @@
       "slugRequired": "Slug обязателен!",
       "titleRequired": "Название (AZ и RU) обязательно!",
       "videoTitle": "Источник видео",
-      "videoPlaceholder": "Ссылка на видео (YouTube или Instagram URL)",
-      "videoHint": "Вставьте полную ссылку (например, https://www.youtube.com/watch?v=... или https://www.instagram.com/reel/...). Галерея автоматически вставит её."
+      "videoPlaceholder": "Ссылка на видео (YouTube/Instagram URL или ссылка на загруженный файл)",
+      "videoHint": "Вставьте полную ссылку (например, YouTube или Instagram) ИЛИ загрузите собственный видеофайл (макс. 100МБ).",
+      "videoUpload": "Загрузить видео",
+      "videoUploading": "Видео загружается...",
+      "videoSizeError": "Размер видео превышает лимит в 100МБ!"
     },
     "table": {
       "preview": "Обложка",

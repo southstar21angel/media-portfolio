@@ -55,7 +55,7 @@ export function VideoPlayer({ videoUrl, poster, autoPlay = true }) {
   if (ytId) {
     return (
       <div 
-        className="relative w-full bg-black mx-auto overflow-hidden"
+        className="relative w-full bg-black mx-auto overflow-hidden max-h-[75vh] md:max-h-[80vh]"
         style={{ aspectRatio }}
       >
         {loading && (
@@ -78,7 +78,7 @@ export function VideoPlayer({ videoUrl, poster, autoPlay = true }) {
   if (instagramUrl) {
     return (
       <div 
-        className="relative w-full max-w-[450px] bg-black mx-auto overflow-hidden"
+        className="relative w-full max-w-[450px] bg-black mx-auto overflow-hidden max-h-[75vh] md:max-h-[80vh]"
         style={{ aspectRatio }}
       >
         {loading && (
@@ -102,7 +102,7 @@ export function VideoPlayer({ videoUrl, poster, autoPlay = true }) {
   // 3. Direct HTML5 Video
   return (
     <div 
-      className="relative w-full bg-black mx-auto overflow-hidden"
+      className="relative w-full bg-black mx-auto overflow-hidden max-h-[75vh] md:max-h-[80vh]"
       style={{ aspectRatio }}
     >
       <video
@@ -110,6 +110,7 @@ export function VideoPlayer({ videoUrl, poster, autoPlay = true }) {
         poster={poster}
         controls
         autoPlay={autoPlay}
+        loop={autoPlay}
         playsInline
         className="w-full h-full object-contain absolute inset-0"
         onLoadStart={() => setLoading(true)}
