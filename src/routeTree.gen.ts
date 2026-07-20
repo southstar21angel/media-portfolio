@@ -23,7 +23,7 @@ const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/admin.lazy').then((d) => d.Route))
 const WorksIndexRoute = WorksIndexRouteImport.update({
   id: '/works/',
   path: '/works/',
@@ -33,7 +33,7 @@ const WorksSlugRoute = WorksSlugRouteImport.update({
   id: '/works/$slug',
   path: '/works/$slug',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/works/$slug.lazy').then((d) => d.Route))
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute

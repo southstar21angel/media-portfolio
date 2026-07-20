@@ -12,7 +12,7 @@ export function HeroSection({ showIntro = false }) {
         className={`absolute inset-0 bg-cover bg-[80%_center] md:bg-center opacity-40 transition-all duration-[6000ms] ease-out ${
           showIntro ? 'scale-110' : 'scale-100'
         }`}
-        style={{ backgroundImage: `url('/images/hero-bg.png')` }}
+        style={{ backgroundImage: `url('/images/hero-bg.webp')` }}
       />
       {/* Dark Vignette Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/10" />

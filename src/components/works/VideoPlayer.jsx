@@ -1,31 +1,24 @@
 import React, { useState, useEffect } from 'react'
 
+// Helper 1. YouTube detection and parsing
+const getYouTubeId = (url) => {
+  if (!url) return null
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
+  const match = url.match(regExp)
+  return match && match[2].length === 11 ? match[2] : null
+}
+
+// Helper 2. Instagram detection and parsing
+const getInstagramEmbedUrl = (url) => {
+  if (!url) return null
+  const cleanUrl = url.split('?')[0].split('#')[0]
+  const match = cleanUrl.match(/instagram\.com\/(?:p|reel|tv)\/([A-Za-z0-9_-]+)/)
+  return match ? `https://www.instagram.com/p/${match[1]}/embed/` : null
+}
+
 export function VideoPlayer({ videoUrl, poster, autoPlay = true }) {
   const [loading, setLoading] = useState(true)
   const [aspectRatio, setAspectRatio] = useState(16 / 9)
-
-  if (!videoUrl) {
-    return (
-      <div className="w-full aspect-video bg-neutral-900 flex items-center justify-center text-muted-foreground font-heading text-xs tracking-wider uppercase">
-        No video available
-      </div>
-    )
-  }
-
-  // 1. YouTube detection and parsing
-  const getYouTubeId = (url) => {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/
-    const match = url.match(regExp)
-    return match && match[2].length === 11 ? match[2] : null
-  }
-
-  // 2. Instagram detection and parsing
-  const getInstagramEmbedUrl = (url) => {
-    if (!url) return null
-    const cleanUrl = url.split('?')[0].split('#')[0]
-    const match = cleanUrl.match(/instagram\.com\/(?:p|reel|tv)\/([A-Za-z0-9_-]+)/)
-    return match ? `https://www.instagram.com/p/${match[1]}/embed/` : null
-  }
 
   const ytId = getYouTubeId(videoUrl)
   const instagramUrl = getInstagramEmbedUrl(videoUrl)
@@ -42,7 +35,7 @@ export function VideoPlayer({ videoUrl, poster, autoPlay = true }) {
     setLoading(false)
   }
 
-  // Determine initial aspect ratio based on type
+  // Determine initial aspect ratio based on type (Called unconditionally)
   useEffect(() => {
     if (instagramUrl) {
       // Instagram embeds fit perfectly in a 3:4 aspect ratio card
@@ -51,6 +44,14 @@ export function VideoPlayer({ videoUrl, poster, autoPlay = true }) {
       setAspectRatio(16 / 9)
     }
   }, [instagramUrl, ytId])
+
+  if (!videoUrl) {
+    return (
+      <div className="w-full aspect-video bg-neutral-900 flex items-center justify-center text-muted-foreground font-heading text-xs tracking-wider uppercase">
+        No video available
+      </div>
+    )
+  }
 
   if (ytId) {
     return (
@@ -90,9 +91,7 @@ export function VideoPlayer({ videoUrl, poster, autoPlay = true }) {
           src={instagramUrl}
           title="Instagram Video Player"
           className="w-full h-full border-0 absolute inset-0"
-          allowTransparency
           scrolling="no"
-          frameBorder="0"
           onLoad={handleIframeLoad}
         />
       </div>
@@ -126,3 +125,4 @@ export function VideoPlayer({ videoUrl, poster, autoPlay = true }) {
     </div>
   )
 }
+

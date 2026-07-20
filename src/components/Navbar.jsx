@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link } from '@tanstack/react-router'
+import { Link, useLocation } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-import { Menu, X } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
@@ -10,22 +10,17 @@ import { Logo } from '@/components/Logo'
 export function Navbar() {
   const { t, i18n } = useTranslation()
   const [isOpen, setIsOpen] = React.useState(false)
+  const location = useLocation()
 
-  const [isLogoIntroActive, setIsLogoIntroActive] = React.useState(() => {
-    if (typeof window !== 'undefined' && window.location.pathname === '/') {
-      return !sessionStorage.getItem('mirkazim_logo_intro')
-    }
-    return false
-  })
-  const [isActionsIntroActive, setIsActionsIntroActive] = React.useState(() => {
-    if (typeof window !== 'undefined' && window.location.pathname === '/') {
-      return !sessionStorage.getItem('mirkazim_logo_intro')
-    }
-    return false
-  })
+  const [isLogoIntroActive, setIsLogoIntroActive] = React.useState(false)
+  const [isActionsIntroActive, setIsActionsIntroActive] = React.useState(false)
 
   React.useEffect(() => {
-    if (isLogoIntroActive) {
+    const isHomepage = location.pathname === '/'
+    if (isHomepage && !sessionStorage.getItem('mirkazim_logo_intro')) {
+      setIsLogoIntroActive(true)
+      setIsActionsIntroActive(true)
+
       const logoTimer = setTimeout(() => {
         setIsLogoIntroActive(false)
       }, 4400)
@@ -38,8 +33,11 @@ export function Navbar() {
         clearTimeout(logoTimer)
         clearTimeout(actionsTimer)
       }
+    } else {
+      setIsLogoIntroActive(false)
+      setIsActionsIntroActive(false)
     }
-  }, [isLogoIntroActive])
+  }, [location.pathname])
 
   const changeLanguage = (lng) => {
     if (lng) {

@@ -7,18 +7,19 @@ export function ReelSection() {
   const sectionRef = React.useRef(null)
 
   React.useEffect(() => {
+    const currentRef = sectionRef.current
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsIntersecting(entry.isIntersecting)
       },
       { threshold: 0.1 }
     )
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
+    if (currentRef) {
+      observer.observe(currentRef)
     }
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current)
+      if (currentRef) {
+        observer.unobserve(currentRef)
       }
     }
   }, [])
@@ -123,7 +124,7 @@ export function ReelSection() {
           <div className="w-full lg:w-1/2 flex justify-center">
             <div className="relative w-full max-w-[560px] aspect-[4/3] overflow-hidden border border-border/40 bg-surface-light">
               <video 
-                src="/videos/reel.MOV" 
+                src="/videos/reel.mp4" 
                 autoPlay 
                 loop 
                 muted 

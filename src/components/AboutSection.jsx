@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { SectionHeading } from './SectionHeading'
+
 
 export function AboutSection() {
   const { t } = useTranslation()
@@ -10,7 +10,7 @@ export function AboutSection() {
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-25"
-        style={{ backgroundImage: `url('/images/bg-about.png')` }}
+        style={{ backgroundImage: `url('/images/bg-about.webp')` }}
       />
       {/* Dark Vignette Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black" />
@@ -33,7 +33,7 @@ export function AboutSection() {
             <div className="relative group w-72 h-72 sm:w-96 sm:h-96 rounded-full overflow-hidden border border-border/40 bg-surface-light aspect-square">
               {/* Image zoom effect */}
               <img 
-                src="/images/profile-about.png" 
+                src="/images/profile-about.webp" 
                 alt="Mirkazim" 
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 rounded-full"
                 loading="lazy"

@@ -19,7 +19,7 @@ export function WorksPreview() {
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-30"
-        style={{ backgroundImage: `url('/images/bg-works.png')` }}
+        style={{ backgroundImage: `url('/images/bg-works.webp')` }}
       />
       {/* Dark Vignette Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black/20 to-black" />
