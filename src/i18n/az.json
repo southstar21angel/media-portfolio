@@ -1,0 +1,118 @@
+{
+  "nav": {
+    "works": "İşlər",
+    "contact": "Əlaqə"
+  },
+  "hero": {
+    "motto": "Mirkazim",
+    "media": "— Media",
+    "tagline": "Videoqrafiya"
+  },
+  "about": {
+    "title": "Haqqımda",
+    "subtitle": "VİZUAL HEKAYƏÇİ",
+    "bio": "Salam, mən Mirkazım. Mən professional videoqraf və content makerəm. Hər bir layihəyə xüsusi yaradıcılıq və peşəkarlıqla yanaşaraq, hissləri və hekayələri kadrlara köçürürəm."
+  },
+  "reel": {
+    "tag": "ÜSTÜNLÜKLƏR",
+    "title": "Siz nə əldə edəcəksiz?",
+    "description": "Alqoritmlərə və vizual trendlərə uyğun hazırlanmış Reels/Shorts məzmunları hesabınızın əhatə dairəsini (reach) genişləndirir, profilinizə real və fəal izləyicilər gətirir. Hisslərə toxunan və peşəkar kadrlar müştərinin gözündə brendinizin dəyərini qaldırır, xidmətinizi daha üst seqmentdə təqdim etməyə imkan verir."
+  },
+  "works": {
+    "title": "İşlər",
+    "subtitle": "Bütün İşlərimiz",
+    "viewDetails": "ətraflı bax",
+    "loading": "İşlər yüklənir...",
+    "error": "İşlərin yüklənməsində xəta baş verdi."
+  },
+  "contact": {
+    "title": "Əlaqə",
+    "cta": "Birlikdə yaradaq",
+    "email": "E-poçt",
+    "phone": "Telefon",
+    "socials": "Sosial şəbəkələr",
+    "success": "Mesajınız uğurla göndərildi!",
+    "name": "Adınız",
+    "message": "Mesajınız",
+    "send": "Göndər",
+    "location": "Bakı, Azərbaycan"
+  },
+  "project": {
+    "year": "İl",
+    "category": "Kateqoriya",
+    "description": "Təsvir",
+    "back": "Geri",
+    "next": "Növbəti layihə",
+    "prev": "Əvvəlki layihə",
+    "close": "Bağla",
+    "loading": "Layihə yüklənir...",
+    "gallery": "Qalereya"
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Girişi",
+      "subtitle": "MIRKAZIM MEDIA PORTFOLIO",
+      "emailLabel": "E-poçt",
+      "emailPlaceholder": "E-poçt ünvanını daxil edin...",
+      "passwordLabel": "Şifrə",
+      "passwordPlaceholder": "Şifrəni daxil edin...",
+      "submit": "Daxil ol",
+      "error": "Səhv e-poçt və ya şifrə. Yenidən cəhd edin.",
+      "back": "Qalereyaya geri qayıt"
+    },
+    "dashboard": {
+      "title": "Konsol Paneli",
+      "subtitle": "Video Portfolionu İdarə Et",
+      "addProject": "Layihə Əlavə Et",
+      "logout": "Çıxış",
+      "editTitle": "Düzəliş et: {{slug}}",
+      "createTitle": "Yeni Layihə Yarat",
+      "cancel": "Ləğv et",
+      "save": "Layihəni Saxla",
+      "saving": "Saxlanılır...",
+      "loading": "Yüklənir...",
+      "loadingDashboard": "Konsol yüklənir...",
+      "empty": "Məlumat bazasında layihə tapılmadı. Yaratmaq üçün 'Layihə Əlavə Et' düyməsinə klikləyin.",
+      "retry": "Yenidən yoxla",
+      "deleteConfirm": "\"{{slug}}\" layihəsini silmək istədiyinizdən əminsiniz?"
+    },
+    "form": {
+      "titleAz": "Başlıq (AZ)",
+      "titleRu": "Başlıq (RU)",
+      "slug": "Slug (URL İdentifikatoru)",
+      "categoryAz": "Kateqoriya (AZ)",
+      "categoryRu": "Kateqoriya (RU)",
+      "year": "İl",
+      "sortOrder": "Sıralama nömrəsi",
+      "featured": "Əsas Səhifədə Göstərilsin",
+      "descriptionAz": "Təsvir (AZ)",
+      "descriptionRu": "Təsvir (RU)",
+      "descriptionAzPlaceholder": "Azərbaycan dilində təsvir daxil edin...",
+      "descriptionRuPlaceholder": "Rus dilində təsvir daxil edin...",
+      "titleAzPlaceholder": "məs. Əbədi.",
+      "titleRuPlaceholder": "məs. Вечность.",
+      "slugPlaceholder": "məs. eternal",
+      "categoryAzPlaceholder": "məs. Toy Filmi",
+      "categoryRuPlaceholder": "məs. Свадебный фильм",
+      "thumbnailTitle": "Önşəkil (Thumbnail)",
+      "thumbnailPlaceholder": "Şəkil URL-i (məs. /images/... və ya birbaşa link)",
+      "thumbnailUpload": "Faylı Yüklə",
+      "thumbnailUploading": "Yüklənir...",
+      "slugRequired": "Slug tələb olunur!",
+      "titleRequired": "Başlıq (AZ və RU) tələb olunur!",
+      "videoTitle": "Video Mənbəyi",
+      "videoPlaceholder": "Video Linki (YouTube və ya Instagram URL-i)",
+      "videoHint": "Tam linki yapışdırın (məs. https://www.youtube.com/watch?v=... və ya https://www.instagram.com/reel/...). Qalereya pleyeri onu avtomatik oxudacaq."
+    },
+    "table": {
+      "preview": "Önbaxış",
+      "title": "Başlıq (AZ)",
+      "category": "Kateqoriya (AZ)",
+      "featured": "Seçilmiş",
+      "order": "Sıra",
+      "actions": "Əməliyyatlar",
+      "yes": "Bəli",
+      "no": "Xeyr"
+    }
+  }
+}

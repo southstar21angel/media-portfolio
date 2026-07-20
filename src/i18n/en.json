@@ -1,0 +1,118 @@
+{
+  "nav": {
+    "works": "Works",
+    "contact": "Contact"
+  },
+  "hero": {
+    "motto": "Mirkazim",
+    "media": "— Media",
+    "tagline": "Videography"
+  },
+  "about": {
+    "title": "About",
+    "subtitle": "VISUAL STORYTELLER",
+    "bio": "Hi, I am Mirkazim. I am a professional videographer and content creator. I approach each project with unique creativity and professionalism, translating emotions and stories into frames."
+  },
+  "reel": {
+    "tag": "BENEFITS",
+    "title": "What will you get?",
+    "description": "Reels/Shorts content crafted in line with algorithms and visual trends expands your account's reach, bringing real and active followers to your profile. Emotional and professional shots raise your brand's value in the eyes of the customer, allowing you to present your service in a higher segment."
+  },
+  "works": {
+    "title": "Works",
+    "subtitle": "All Projects",
+    "viewDetails": "view details",
+    "loading": "Loading projects...",
+    "error": "An error occurred while loading projects."
+  },
+  "contact": {
+    "title": "Contact",
+    "cta": "Let's create together",
+    "email": "Email",
+    "phone": "Phone",
+    "socials": "Social media",
+    "success": "Your message has been sent successfully!",
+    "name": "Your Name",
+    "message": "Your Message",
+    "send": "Send",
+    "location": "Baku, Azerbaijan"
+  },
+  "project": {
+    "year": "Year",
+    "category": "Category",
+    "description": "Description",
+    "back": "Back",
+    "next": "Next project",
+    "prev": "Previous project",
+    "close": "Close",
+    "loading": "Loading project...",
+    "gallery": "Gallery"
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Login",
+      "subtitle": "MIRKAZIM MEDIA PORTFOLIO",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter email address...",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter password...",
+      "submit": "Log In",
+      "error": "Incorrect email or password. Please try again.",
+      "back": "Back to Gallery"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "subtitle": "Manage Video Portfolio",
+      "addProject": "Add Project",
+      "logout": "Log Out",
+      "editTitle": "Edit: {{slug}}",
+      "createTitle": "Create New Project",
+      "cancel": "Cancel",
+      "save": "Save Project",
+      "saving": "Saving...",
+      "loading": "Loading...",
+      "loadingDashboard": "Loading dashboard...",
+      "empty": "No projects found in the database. Click 'Add Project' to create one.",
+      "retry": "Retry",
+      "deleteConfirm": "Are you sure you want to delete the project \"{{slug}}\"?"
+    },
+    "form": {
+      "titleAz": "Title (AZ)",
+      "titleRu": "Title (RU)",
+      "slug": "Slug (URL Identifier)",
+      "categoryAz": "Category (AZ)",
+      "categoryRu": "Category (RU)",
+      "year": "Year",
+      "sortOrder": "Sort Order",
+      "featured": "Show on Home Page",
+      "descriptionAz": "Description (AZ)",
+      "descriptionRu": "Description (RU)",
+      "descriptionAzPlaceholder": "Enter description in Azerbaijani...",
+      "descriptionRuPlaceholder": "Enter description in Russian...",
+      "titleAzPlaceholder": "e.g. Eternal.",
+      "titleRuPlaceholder": "e.g. Вечность.",
+      "slugPlaceholder": "e.g. eternal",
+      "categoryAzPlaceholder": "e.g. Wedding Film",
+      "categoryRuPlaceholder": "e.g. Свадебный фильм",
+      "thumbnailTitle": "Thumbnail",
+      "thumbnailPlaceholder": "Image URL (e.g. /images/... or direct link)",
+      "thumbnailUpload": "Upload File",
+      "thumbnailUploading": "Uploading...",
+      "slugRequired": "Slug is required!",
+      "titleRequired": "Title (AZ and RU) is required!",
+      "videoTitle": "Video Source",
+      "videoPlaceholder": "Video Link (YouTube or Instagram URL)",
+      "videoHint": "Paste full link (e.g. https://www.youtube.com/watch?v=... or https://www.instagram.com/reel/...). The gallery player will automatically play it."
+    },
+    "table": {
+      "preview": "Preview",
+      "title": "Title (AZ)",
+      "category": "Category (AZ)",
+      "featured": "Featured",
+      "order": "Order",
+      "actions": "Actions",
+      "yes": "Yes",
+      "no": "No"
+    }
+  }
+}
