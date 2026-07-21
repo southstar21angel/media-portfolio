@@ -15,10 +15,31 @@ function WorksPage() {
   const { t } = useTranslation()
   const { projects, loading, error } = useProjects()
 
+  const worksJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Ana Səhifə",
+        "item": "https://mirkazim.media/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "İşlər",
+        "item": "https://mirkazim.media/works"
+      }
+    ]
+  }
+
   useSEO({
     title: t('works.seoTitle'),
     description: t('works.seoDescription'),
     keywords: t('seo.keywords'),
+    url: 'https://mirkazim.media/works',
+    jsonLd: worksJsonLd,
   })
 
   return (

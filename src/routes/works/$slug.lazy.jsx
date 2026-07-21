@@ -40,6 +40,46 @@ function ProjectDetailPage() {
 
   const seoImage = project?.thumbnail || ''
 
+  const pageUrl = `https://mirkazim.media/works/${slug}`
+
+  const projectJsonLd = project ? {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Ana Səhifə",
+            "item": "https://mirkazim.media/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "İşlər",
+            "item": "https://mirkazim.media/works"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": localize(project, 'title'),
+            "item": pageUrl
+          }
+        ]
+      },
+      ...(project.video_url ? [{
+        "@type": "VideoObject",
+        "name": localize(project, 'title'),
+        "description": localize(project, 'description') || `${localize(project, 'title')} - Mirkazim Media video project`,
+        "thumbnailUrl": [project.thumbnail || "https://mirkazim.media/images/profile-about.webp"],
+        "contentUrl": project.video_url,
+        "embedUrl": project.video_url,
+        "uploadDate": project.created_at || "2026-01-01T00:00:00Z"
+      }] : [])
+    ]
+  } : null
+
   useSEO({
     title: seoTitle,
     description: seoDesc,
@@ -47,6 +87,8 @@ function ProjectDetailPage() {
       ? `${localize(project, 'title')}, ${localize(project, 'category')}, Mirkazim Media, videoqraf, Baku` 
       : '',
     image: seoImage,
+    url: pageUrl,
+    jsonLd: projectJsonLd,
   })
 
   if (loading) {
