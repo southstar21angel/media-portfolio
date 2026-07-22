@@ -171,7 +171,8 @@ export function ReelSection() {
                 }}
                 className="w-full h-full object-cover"
               >
-                <source src="/videos/reel.mp4" type="video/mp4" />
+                <source src="/videos/reel.MOV" type="video/quicktime" />
+                <source src="/videos/reel.MOV" type="video/mp4" />
               </video>
               {/* Subtle visual gradient edge mask */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/20 pointer-events-none" />
