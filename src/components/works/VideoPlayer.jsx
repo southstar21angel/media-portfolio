@@ -105,16 +105,25 @@ export function VideoPlayer({ videoUrl, poster, autoPlay = true }) {
       style={{ aspectRatio }}
     >
       <video
-        src={videoUrl}
         poster={poster}
         controls
         autoPlay={autoPlay}
         loop={autoPlay}
+        muted={autoPlay}
         playsInline
+        webkit-playsinline="true"
+        preload="metadata"
         className="w-full h-full object-contain absolute inset-0"
         onLoadStart={() => setLoading(true)}
         onLoadedMetadata={handleLoadedMetadata}
+        onCanPlay={(e) => {
+          if (autoPlay) {
+            e.target.muted = true
+            e.target.play().catch(() => {})
+          }
+        }}
       >
+        <source src={videoUrl} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       {loading && (

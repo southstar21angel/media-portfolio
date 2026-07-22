@@ -5,12 +5,29 @@ export function ReelSection() {
   const { t } = useTranslation()
   const [isIntersecting, setIsIntersecting] = React.useState(false)
   const sectionRef = React.useRef(null)
+  const videoRef = React.useRef(null)
+
+  React.useEffect(() => {
+    const video = videoRef.current
+    if (video) {
+      video.muted = true
+      video.defaultMuted = true
+      video.playsInline = true
+      video.setAttribute('playsinline', '')
+      video.setAttribute('webkit-playsinline', 'true')
+      video.play().catch(() => {})
+    }
+  }, [])
 
   React.useEffect(() => {
     const currentRef = sectionRef.current
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsIntersecting(entry.isIntersecting)
+        if (entry.isIntersecting && videoRef.current) {
+          videoRef.current.muted = true
+          videoRef.current.play().catch(() => {})
+        }
       },
       { threshold: 0.1 }
     )
@@ -122,15 +139,23 @@ export function ReelSection() {
           
           {/* Left: Autoplay Video */}
           <div className="w-full lg:w-1/2 flex justify-center">
-            <div className="relative w-full max-w-[560px] aspect-[4/3] overflow-hidden border border-border/40 bg-surface-light">
+            <div className="relative w-full max-w-[560px] aspect-[4/3] overflow-hidden border border-border/40 bg-zinc-950">
               <video 
-                src="/videos/reel.mp4" 
+                ref={videoRef}
                 autoPlay 
                 loop 
                 muted 
                 playsInline 
+                webkit-playsinline="true"
+                preload="auto"
+                onLoadedData={(e) => {
+                  e.target.muted = true
+                  e.target.play().catch(() => {})
+                }}
                 className="w-full h-full object-cover"
-              />
+              >
+                <source src="/videos/reel.mp4" type="video/mp4" />
+              </video>
               {/* Subtle visual gradient edge mask */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/20 pointer-events-none" />
             </div>
