@@ -17,6 +17,22 @@ export function ReelSection() {
       video.setAttribute('webkit-playsinline', 'true')
       video.play().catch(() => {})
     }
+
+    // Touch/interaction fallback for iOS Low Power Mode
+    const handleTouchOrScroll = () => {
+      if (videoRef.current && videoRef.current.paused) {
+        videoRef.current.muted = true
+        videoRef.current.play().catch(() => {})
+      }
+    }
+
+    window.addEventListener('touchstart', handleTouchOrScroll, { passive: true })
+    window.addEventListener('scroll', handleTouchOrScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchOrScroll)
+      window.removeEventListener('scroll', handleTouchOrScroll)
+    }
   }, [])
 
   React.useEffect(() => {
@@ -148,6 +164,7 @@ export function ReelSection() {
                 playsInline 
                 webkit-playsinline="true"
                 preload="auto"
+                poster="/videos/reel-poster.jpg"
                 onLoadedData={(e) => {
                   e.target.muted = true
                   e.target.play().catch(() => {})
